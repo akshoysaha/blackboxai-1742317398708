@@ -69,13 +69,35 @@ http://localhost:8008
 
 2. Log in using the credentials you created in step 5 of the Synapse setup.
 
-## Environment Variables
+## Environment Setup
 
-Create a `.env` file in the root directory with the following variables:
-
-```env
-MATRIX_HOMESERVER_URL=http://localhost:8008
+1. Copy the example environment file:
+```bash
+cp .env.example .env
 ```
+
+2. Configure your environment variables in `.env`:
+```env
+# Required: Matrix homeserver URL
+MATRIX_HOMESERVER_URL=http://localhost:8008
+
+# Required: Session configuration
+SESSION_SECRET=your-secret-key-min-32-chars
+
+# Optional: Default credentials for development
+# MATRIX_USER=your_username
+# MATRIX_PASSWORD=your_password
+
+# Optional: Development configuration
+# NODE_ENV=development
+```
+
+The application uses several key configurations:
+- Matrix client (`app/config/matrix.ts`): Handles connection to your Synapse server
+- Session management (`app/utils/session.server.ts`): Manages user authentication state
+- Matrix service (`app/services/matrix.server.ts`): Provides Matrix protocol interactions
+
+Make sure to set a secure SESSION_SECRET in production (minimum 32 characters).
 
 ## Features
 
