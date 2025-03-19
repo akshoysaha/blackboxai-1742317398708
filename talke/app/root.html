@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#2196f3" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" href="/logo192.png" />
+    <link rel="manifest" href="/manifest.json" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+    />
+    <title>Talke - Matrix Chat Client</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script>
+      // Prevent FOUC (Flash of Unstyled Content)
+      (function() {
+        let darkMode = localStorage.getItem('theme-mode') === 'dark';
+        if (!darkMode && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+          darkMode = true;
+        }
+        if (darkMode) {
+          document.documentElement.style.backgroundColor = '#121212';
+          document.body.style.backgroundColor = '#121212';
+        }
+      })();
+    </script>
+    <script type="module" src="/entry.client.tsx"></script>
+  </body>
+</html>
