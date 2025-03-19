@@ -1,134 +1,90 @@
-# Talke - Matrix-based Chat Application
+# Talke - Matrix Chat Client
 
-A modern chat application built with Remix, TypeScript, and Matrix Protocol integration.
+Talke is a modern Matrix chat client built with Remix, Material UI, and TypeScript. It provides a clean and intuitive interface for Matrix communication.
 
-## Prerequisites
+## Features
 
-- Node.js >= 20.0.0
-- npm >= 9.0.0
-- Docker (for running Synapse locally)
+- 🔐 Secure Matrix authentication
+- 💬 Real-time messaging
+- 👥 Group chat support
+- 🌓 Dark/Light theme
+- 📱 Responsive design
+- 🚀 Fast and lightweight
 
-## Local Development Setup
+## Getting Started
 
-1. Install dependencies:
+### Prerequisites
+
+- Node.js >= 18
+- npm or yarn
+- A Matrix account (you can create one at https://matrix.org)
+
+### Installation
+
+1. Clone the repository:
+```bash
+git clone https://github.com/yourusername/talke.git
+cd talke
+```
+
+2. Install dependencies:
 ```bash
 npm install
 ```
 
-2. Start the development server:
-```bash
-npm run dev
-```
-
-The application will be available at `http://localhost:3000`
-
-## Setting up Synapse Locally
-
-Synapse is the reference Matrix homeserver implementation. Here's how to set it up locally:
-
-1. Install Docker if you haven't already: [Docker Installation Guide](https://docs.docker.com/get-docker/)
-
-2. Create a directory for Synapse data:
-```bash
-mkdir synapse-data
-```
-
-3. Generate the Synapse configuration:
-```bash
-docker run -it --rm \
-    -v $(pwd)/synapse-data:/data \
-    -e SYNAPSE_SERVER_NAME=localhost \
-    -e SYNAPSE_REPORT_STATS=no \
-    matrixdotorg/synapse:latest generate
-```
-
-4. Start Synapse server:
-```bash
-docker run -d --name synapse \
-    -v $(pwd)/synapse-data:/data \
-    -p 8008:8008 \
-    matrixdotorg/synapse:latest
-```
-
-5. Create a new user account (replace username and password):
-```bash
-docker exec -it synapse register_new_matrix_user \
-    http://localhost:8008 \
-    -c /data/homeserver.yaml \
-    -u yourusername \
-    -p yourpassword \
-    -a
-```
-
-## Connecting Talke to Synapse
-
-1. In the Talke application, use the following homeserver URL:
-```
-http://localhost:8008
-```
-
-2. Log in using the credentials you created in step 5 of the Synapse setup.
-
-## Environment Setup
-
-1. Copy the example environment file:
+3. Create a `.env` file:
 ```bash
 cp .env.example .env
 ```
 
-2. Configure your environment variables in `.env`:
-```env
-# Required: Matrix homeserver URL
-MATRIX_HOMESERVER_URL=http://localhost:8008
+4. Update the environment variables in `.env` with your settings.
 
-# Required: Session configuration
-SESSION_SECRET=your-secret-key-min-32-chars
+### Development
 
-# Optional: Default credentials for development
-# MATRIX_USER=your_username
-# MATRIX_PASSWORD=your_password
-
-# Optional: Development configuration
-# NODE_ENV=development
+Start the development server:
+```bash
+npm run dev
 ```
 
-The application uses several key configurations:
-- Matrix client (`app/config/matrix.ts`): Handles connection to your Synapse server
-- Session management (`app/utils/session.server.ts`): Manages user authentication state
-- Matrix service (`app/services/matrix.server.ts`): Provides Matrix protocol interactions
+The app will be available at http://localhost:3000.
 
-Make sure to set a secure SESSION_SECRET in production (minimum 32 characters).
+### Production
 
-## Features
+Build the app:
+```bash
+npm run build
+```
 
-- Real-time chat using Matrix Protocol
-- End-to-end encryption
-- File sharing
-- User presence
-- Room management
-- Direct messaging
-
-## Development Scripts
-
-- `npm run dev` - Start development server
-- `npm run build` - Build for production
-- `npm run start` - Start production server
-- `npm run typecheck` - Run TypeScript type checking
-- `npm run lint` - Run ESLint
+Start the production server:
+```bash
+npm start
+```
 
 ## Project Structure
 
 ```
 talke/
 ├── app/
-│   ├── components/    # Reusable UI components
-│   ├── routes/        # Application routes
-│   ├── services/      # Business logic and API calls
-│   ├── styles/        # Global styles and Tailwind config
-│   └── utils/         # Helper functions and utilities
-├── public/           # Static assets
-└── tests/           # Test files
+│   ├── components/     # React components
+│   ├── config/        # Configuration files
+│   ├── contexts/      # React contexts
+│   ├── hooks/         # Custom React hooks
+│   ├── routes/        # Remix routes
+│   ├── services/      # API services
+│   ├── styles/        # Style utilities
+│   ├── types/         # TypeScript types
+│   └── utils/         # Utility functions
+├── public/            # Static assets
+└── package.json       # Project metadata and dependencies
 ```
+
+## Technologies
+
+- [Remix](https://remix.run/) - Full stack web framework
+- [Material UI](https://mui.com/) - React UI library
+- [Matrix JS SDK](https://github.com/matrix-org/matrix-js-sdk) - Matrix client library
+- [TypeScript](https://www.typescriptlang.org/) - Type-safe JavaScript
+- [Emotion](https://emotion.sh/) - CSS-in-JS library
 
 ## Contributing
 
@@ -140,4 +96,10 @@ talke/
 
 ## License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Acknowledgments
+
+- [Matrix.org](https://matrix.org/) for the amazing protocol
+- [Remix](https://remix.run/) team for the excellent framework
+- [Material UI](https://mui.com/) team for the beautiful components
