@@ -1,45 +1,132 @@
+import { useEffect } from 'react';
+import type { MetaFunction } from '@remix-run/node';
 import {
   Links,
+  LiveReload,
   Meta,
   Outlet,
   Scripts,
   ScrollRestoration,
-} from "@remix-run/react";
-import type { LinksFunction } from "@remix-run/node";
+  useLocation,
+} from '@remix-run/react';
+import { withEmotionCache } from '@emotion/react';
+import { unstable_useEnhancedEffect as useEnhancedEffect } from '@mui/material';
+import { ThemeProvider } from '~/components/ui/ThemeProvider';
+import ClientStyleContext from '~/styles/client.context';
 
-import "./tailwind.css";
+export const meta: MetaFunction = () => {
+  return [
+    { title: 'Talke - Matrix Chat Client' },
+    { name: 'description', content: 'A modern Matrix chat client built with Remix and Material UI' },
+    { name: 'viewport', content: 'width=device-width,initial-scale=1' },
+    { name: 'theme-color', content: '#2196f3' },
+  ];
+};
 
-export const links: LinksFunction = () => [
-  { rel: "preconnect", href: "https://fonts.googleapis.com" },
-  {
-    rel: "preconnect",
-    href: "https://fonts.gstatic.com",
-    crossOrigin: "anonymous",
-  },
-  {
-    rel: "stylesheet",
-    href: "https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap",
-  },
-];
+interface DocumentProps {
+  children: React.ReactNode;
+  title?: string;
+}
 
-export function Layout({ children }: { children: React.ReactNode }) {
+const Document = withEmotionCache(
+  ({ children, title }: DocumentProps, emotionCache) => {
+    const clientStyleData = { reset: () => {} };
+    const location = useLocation();
+
+    useEnhancedEffect(() => {
+      emotionCache.sheet.container = document.head;
+      const tags = emotionCache.sheet.tags;
+      emotionCache.sheet.flush();
+      tags.forEach((tag) => {
+        (emotionCache.sheet as any)._insertTag(tag);
+      });
+      clientStyleData.reset();
+    }, []);
+
+    return (
+      <html lang="en">
+        <head>
+          {title ? <title>{title}</title> : null}
+          <Meta />
+          <Links />
+          <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+          />
+          <meta name="emotion-insertion-point" content="" />
+        </head>
+        <body>
+          <ClientStyleContext.Provider value={clientStyleData}>
+            <ThemeProvider>{children}</ThemeProvider>
+          </ClientStyleContext.Provider>
+          <ScrollRestoration />
+          <Scripts />
+          <LiveReload />
+        </body>
+      </html>
+    );
+  }
+);
+
+export default function App() {
   return (
-    <html lang="en">
-      <head>
-        <meta charSet="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <Meta />
-        <Links />
-      </head>
-      <body>
-        {children}
-        <ScrollRestoration />
-        <Scripts />
-      </body>
-    </html>
+    <Document>
+      <Outlet />
+    </Document>
   );
 }
 
-export default function App() {
-  return <Outlet />;
+// Handle errors gracefully
+export function ErrorBoundary({ error }: { error: Error }) {
+  console.error(error);
+  return (
+    <Document title="Error!">
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          minHeight: '100vh',
+          padding: '2rem',
+          textAlign: 'center',
+        }}
+      >
+        <h1>App Error</h1>
+        <pre>{error.message}</pre>
+        <p>
+          <a href="/" style={{ textDecoration: 'underline' }}>
+            Try again
+          </a>
+        </p>
+      </div>
+    </Document>
+  );
+}
+
+// Handle caught errors (like 404s)
+export function CatchBoundary() {
+  return (
+    <Document title="Error!">
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          minHeight: '100vh',
+          padding: '2rem',
+          textAlign: 'center',
+        }}
+      >
+        <h1>Page Not Found</h1>
+        <p>The page you're looking for doesn't exist.</p>
+        <p>
+          <a href="/" style={{ textDecoration: 'underline' }}>
+            Go home
+          </a>
+        </p>
+      </div>
+    </Document>
+  );
 }
