@@ -1,32 +1,52 @@
 {
   "include": [
+    "remix.env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    "**/.server/**/*.ts",
-    "**/.server/**/*.tsx",
-    "**/.client/**/*.ts",
-    "**/.client/**/*.tsx"
+    "test/**/*.ts",
+    "test/**/*.tsx"
   ],
   "compilerOptions": {
     "lib": ["DOM", "DOM.Iterable", "ES2022"],
-    "types": ["@remix-run/node", "vite/client"],
     "isolatedModules": true,
     "esModuleInterop": true,
     "jsx": "react-jsx",
-    "module": "ESNext",
-    "moduleResolution": "Bundler",
+    "moduleResolution": "node",
     "resolveJsonModule": true,
     "target": "ES2022",
     "strict": true,
     "allowJs": true,
-    "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "baseUrl": ".",
     "paths": {
-      "~/*": ["./app/*"]
+      "~/*": ["./app/*"],
+      "@test/*": ["./test/*"]
     },
-
-    // Vite takes care of building everything, not tsc.
-    "noEmit": true
-  }
+    "skipLibCheck": true,
+    "noEmit": true,
+    "types": [
+      "node",
+      "vitest/globals",
+      "@testing-library/jest-dom",
+      "@types/testing-library__jest-dom",
+      "vite/client"
+    ],
+    "allowSyntheticDefaultImports": true,
+    "module": "ESNext",
+    "noImplicitAny": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "typeRoots": [
+      "./node_modules/@types",
+      "./app/types",
+      "./test/types"
+    ]
+  },
+  "exclude": [
+    "node_modules",
+    "build",
+    "public/build",
+    ".cache"
+  ]
 }
