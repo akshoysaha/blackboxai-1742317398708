@@ -1,5 +1,63 @@
+# Dependencies
 node_modules
+.pnp
+.pnp.js
 
+# Testing
+coverage
+/cypress/videos/
+/cypress/screenshots/
+
+# Production
+build
+dist
+/public/build
+/api/index.js
+/api/index.js.map
+
+# Development
+.cache
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.DS_Store
+*.pem
+
+# Debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# IDE
+.idea
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+!.vscode/launch.json
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Remix
 /.cache
 /build
+/public/build
 .env
+
+# TypeScript
+*.tsbuildinfo
+
+# Logs
+logs
+*.log
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
